@@ -3,11 +3,8 @@
     SQL Server Window Functions - Episode 3
     NTILE()
 
-    Topic:
-    Dividing rows into approximately equal groups
-
     Business Example:
-    Employee salary distribution / quartiles
+    Employee Salary Distribution
 =====================================================================
 */
 
@@ -67,8 +64,6 @@ VALUES
 /*
 =====================================================================
     3. VIEW THE SOURCE DATA
-
-    Before using NTILE(), let's look at the employees and salaries.
 =====================================================================
 */
 
@@ -85,16 +80,10 @@ ORDER BY Salary DESC;
 =====================================================================
     4. BASIC NTILE()
 
-    NTILE(4) divides the ordered rows into 4 groups.
+    Divide all employees into 4 salary groups.
 
-    ORDER BY Salary DESC means the highest-paid employees
-    are placed into the first group.
-
-    SalaryQuartile:
-        1 → Highest salary group
-        2 → Upper-middle salary group
-        3 → Lower-middle salary group
-        4 → Lowest salary group
+    NTILE(4) → creates 4 groups
+    ORDER BY Salary DESC → highest salary comes first
 =====================================================================
 */
 
@@ -113,47 +102,17 @@ ORDER BY Salary DESC;
 
 /*
 =====================================================================
-    5. CHANGING THE NUMBER OF GROUPS
+    5. UNEVEN DISTRIBUTION
 
-    The number passed to NTILE() determines the number of groups.
-
-        NTILE(2) → 2 groups
-        NTILE(4) → 4 groups
-        NTILE(5) → 5 groups
-
-    Here we divide employees into 2 salary groups.
-=====================================================================
-*/
-
-SELECT
-    EmployeeID,
-    EmployeeName,
-    Department,
-    Salary,
-    NTILE(2) OVER
-    (
-        ORDER BY Salary DESC
-    ) AS SalaryGroup
-FROM #Employees
-ORDER BY Salary DESC;
-
-
-/*
-=====================================================================
-    6. UNEVEN DISTRIBUTION
-
-    We have 15 employees and want 4 groups.
-
-        15 / 4 = 3 remainder 3
+    15 rows cannot be divided equally into 4 groups.
 
     NTILE() distributes the rows as evenly as possible.
 
+    Result:
         Group 1 → 4 rows
         Group 2 → 4 rows
         Group 3 → 4 rows
         Group 4 → 3 rows
-
-    The extra rows are assigned to the earlier groups.
 =====================================================================
 */
 
@@ -171,15 +130,12 @@ ORDER BY Salary DESC;
 
 /*
 =====================================================================
-    7. NTILE() WITH PARTITION BY
+    6. NTILE() WITH PARTITION BY
 
-    Without PARTITION BY:
-        All employees are divided into 4 groups.
+    Divide employees into 4 salary groups within each department.
 
-    With PARTITION BY Department:
-        Employees are divided into 4 groups within each department.
-
-    The NTILE() calculation restarts for every department.
+    PARTITION BY Department means the NTILE calculation
+    restarts for every department.
 =====================================================================
 */
 
@@ -201,16 +157,13 @@ ORDER BY
 
 /*
 =====================================================================
-    8. FIND THE TOP QUARTILE WITHIN EACH DEPARTMENT
+    7. PRACTICAL BUSINESS USE CASE
 
     Business Question:
-        Who belongs to the top salary quartile in each department?
+    Who belongs to the top salary quartile within each department?
 
-    Step 1:
-        Calculate the quartile using NTILE(4).
-
-    Step 2:
-        Filter for SalaryQuartile = 1.
+    NTILE(4) divides each department into 4 groups.
+    We then filter for Quartile 1.
 =====================================================================
 */
 
@@ -243,97 +196,14 @@ ORDER BY
 
 /*
 =====================================================================
-    9. NTILE() VS ROW_NUMBER() VS RANK()
+    8. FINAL EXAMPLE
 
-    ROW_NUMBER():
-        Gives every row a unique sequential number.
+    Add a business-friendly category to the quartile.
 
-    RANK():
-        Gives rows a ranking based on the ORDER BY value.
-        Tied values receive the same rank.
-
-    NTILE():
-        Divides ordered rows into a specified number of groups.
-=====================================================================
-*/
-
-SELECT
-    EmployeeID,
-    EmployeeName,
-    Salary,
-
-    ROW_NUMBER() OVER
-    (
-        ORDER BY Salary DESC
-    ) AS RowNumber,
-
-    RANK() OVER
-    (
-        ORDER BY Salary DESC
-    ) AS SalaryRank,
-
-    NTILE(4) OVER
-    (
-        ORDER BY Salary DESC
-    ) AS SalaryQuartile
-
-FROM #Employees
-ORDER BY Salary DESC;
-
-
-/*
-=====================================================================
-    10. ADD BUSINESS-FRIENDLY CATEGORY LABELS
-
-    Convert the numeric quartile into a meaningful category.
-=====================================================================
-*/
-
-WITH EmployeeQuartiles AS
-(
-    SELECT
-        EmployeeID,
-        EmployeeName,
-        Department,
-        Salary,
-        NTILE(4) OVER
-        (
-            ORDER BY Salary DESC
-        ) AS SalaryQuartile
-    FROM #Employees
-)
-SELECT
-    EmployeeID,
-    EmployeeName,
-    Department,
-    Salary,
-    SalaryQuartile,
-
-    CASE SalaryQuartile
-        WHEN 1 THEN 'Top 25%'
-        WHEN 2 THEN '25% - 50%'
-        WHEN 3 THEN '50% - 75%'
-        WHEN 4 THEN 'Bottom 25%'
-    END AS SalaryCategory
-
-FROM EmployeeQuartiles
-ORDER BY Salary DESC;
-
-
-/*
-=====================================================================
-    11. CAPSTONE EXAMPLE
-
-    Business Question:
-        Within each department, classify employees into salary
-        quartiles and assign a business-friendly category.
-
-    Concepts used:
-        - NTILE()
-        - PARTITION BY
-        - ORDER BY
-        - CTE
-        - CASE
+        1 → Top 25%
+        2 → 25% - 50%
+        3 → 50% - 75%
+        4 → Bottom 25%
 =====================================================================
 */
 
@@ -344,13 +214,11 @@ WITH EmployeeSalaryDistribution AS
         EmployeeName,
         Department,
         Salary,
-
         NTILE(4) OVER
         (
             PARTITION BY Department
             ORDER BY Salary DESC
         ) AS SalaryQuartile
-
     FROM #Employees
 )
 SELECT
@@ -359,14 +227,12 @@ SELECT
     Department,
     Salary,
     SalaryQuartile,
-
     CASE SalaryQuartile
         WHEN 1 THEN 'Top 25%'
         WHEN 2 THEN '25% - 50%'
         WHEN 3 THEN '50% - 75%'
         WHEN 4 THEN 'Bottom 25%'
     END AS SalaryCategory
-
 FROM EmployeeSalaryDistribution
 ORDER BY
     Department,
@@ -375,19 +241,15 @@ ORDER BY
 
 /*
 =====================================================================
-    KEY TAKEAWAYS
+    KEY TAKEAWAY
 
-    1. NTILE(n) divides ordered rows into n groups.
+    NTILE(n) divides ordered rows into n approximately equal groups.
 
-    2. NTILE() distributes rows as evenly as possible.
-
-    3. NTILE(4) can be used for quartile-style analysis.
-
-    4. PARTITION BY creates separate NTILE() calculations
-       within each group.
-
-    5. NTILE() groups rows; it does not assign a unique rank.
-
-    6. ROW_NUMBER(), RANK(), and NTILE() solve different problems.
+    NTILE() is useful for:
+        - Quartile analysis
+        - Salary distribution
+        - Customer segmentation
+        - Performance bands
+        - Top/bottom percentage groups
 =====================================================================
 */
