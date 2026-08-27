@@ -27,6 +27,22 @@ Learn how to compare the current row with previous and next rows using:
 📄 [Episode 2 SQL Script](./Episode-02-LEAD-LAG.sql)
 🎥 [Watch Episode 2 on YouTube](https://youtu.be/G2tjaAigp5o?si=PqiOCiUtgBUlwwM2)
 
+### Episode 3 — NTILE
+
+Learn how to divide ordered rows into approximately equal groups using:
+
+* `NTILE()`
+* `ORDER BY`
+* `PARTITION BY`
+* Quartile-style salary distribution
+* Handling uneven group sizes
+* Finding the top salary group within each department
+* Creating business-friendly salary categories
+
+📄 [Episode 3 SQL Script](./Episode_03_NTILE.sql)
+🎥 [Watch Episode 3 on YouTube](https://www.youtube.com/watch?v=1icesekYQ2M)
+
+
 ## 🎯 Purpose of This Series
 
 The goal of this series is to understand SQL Server Window Functions through practical examples rather than learning syntax in isolation.
