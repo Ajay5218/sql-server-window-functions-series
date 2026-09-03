@@ -41,6 +41,19 @@ Learn how to divide ordered rows into approximately equal groups using:
 📄 [Episode 3 SQL Script](./Episode_03_NTILE.sql)
 🎥 [Watch Episode 3 on YouTube](https://www.youtube.com/watch?v=1icesekYQ2M)
 
+### Episode 4 — GROUPBY, HAVING, SUM, MIN, MAX, AVG
+
+* `GROUP BY`
+* `HAVING()`
+* `SUM()`
+* `MIN()`
+* `MAX()`
+* `AVG()`
+* Group by and Having comparision
+* 
+📄 [Episode 4 SQL Script](./Episode_03_NTILE.sql)
+🎥 [Watch Episode 4 on YouTube](https://www.youtube.com/watch?v=CBNfsrR2zkc&t=15s)
+
 ## 🎯 Purpose of This Series
 
 The goal of this series is to understand SQL Server Window Functions through practical examples rather than learning syntax in isolation.
