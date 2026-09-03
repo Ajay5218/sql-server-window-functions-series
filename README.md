@@ -1,6 +1,6 @@
-# SQL Server Window Functions Series
+# SQL Server Concepts Series
 
-Practical SQL Server Window Functions explained through real-world examples and live query demonstrations.
+Practical SQL Server concepts explained through real-world examples and live query demonstrations.
 This repository contains the SQL scripts used in my YouTube series. Each script corresponds to an episode and can be followed along with the video.
 
 ## 📚 Episodes
@@ -56,7 +56,7 @@ Learn how to divide ordered rows into approximately equal groups using:
 
 ## 🎯 Purpose of This Series
 
-The goal of this series is to understand SQL Server Window Functions through practical examples rather than learning syntax in isolation.
+The goal of this series is to understand SQL Server through practical examples rather than learning syntax in isolation.
 The examples progress from basic concepts to real-world analytical scenarios.
 
 ## 🛠️ Technology
