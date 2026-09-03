@@ -50,8 +50,8 @@ Learn how to divide ordered rows into approximately equal groups using:
 * `MAX()`
 * `AVG()`
 * Group by and Having comparision
-* 
-📄 [Episode 4 SQL Script](./Episode_03_NTILE.sql)
+  
+📄 [Episode 4 SQL Script](./Episode-04-SQL-GROUP-BY-Aggregate-Functions-HAVING.sql)
 🎥 [Watch Episode 4 on YouTube](https://www.youtube.com/watch?v=CBNfsrR2zkc&t=15s)
 
 ## 🎯 Purpose of This Series
